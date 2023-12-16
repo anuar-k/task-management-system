@@ -12,6 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -30,10 +31,16 @@ public class AuthenticationService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)
                 .build();
+        if (isExistAccount(user.getEmail())) {
+            return AuthenticationResponse.builder()
+                    .message(String.format("пользователь %s уже существует", request.getEmail()))
+                    .build();
+        }
         userRepository.save(user);
         String jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
+                .message("регистрация пользователя прошла успешно")
                 .build();
     }
 
@@ -46,6 +53,15 @@ public class AuthenticationService {
         return AuthenticationResponse
                 .builder()
                 .token(jwtToken)
+                .message("токен предоставлен")
                 .build();
+    }
+
+    public boolean isExistAccount(String email) {
+        return Objects.nonNull(getUserByEmail(email));
+    }
+
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email).orElse(null);
     }
 }

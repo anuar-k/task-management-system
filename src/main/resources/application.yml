@@ -3,7 +3,6 @@ spring:
     driver-class-name: org.postgresql.Driver
     username: postgres
     password: postgres
-#    url: ${SPRING_DATASOURCE_URL}
     url: jdbc:postgresql://localhost:5432/taskdb
   jpa:
     hibernate:
@@ -17,4 +16,4 @@ application:
   security:
     jwt:
       secret-key: a1f9f3be7a550e38522ad6ca75e4ba534c1cc1c0b95a12fe9d4dd98d26a7d0cd
-      expiration: 86400000 #one day
+      expiration: 1800000 #30 minute

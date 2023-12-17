@@ -9,7 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long>, PagingAndSortingRepository<Comment, Long> {
-    Optional<Comment> getPriorityById(Long id);
-
     Optional<Comment> removePriorityById(Long id);
 }

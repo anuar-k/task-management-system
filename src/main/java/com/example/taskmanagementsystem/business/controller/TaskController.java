@@ -20,6 +20,11 @@ public class TaskController {
         return ResponseEntity.ok(taskService.getAll());
     }
 
+    @GetMapping("/get/{id}")
+    public ResponseEntity<Task> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(taskService.getById(id));
+    }
+
     @PostMapping("/add")
     public ResponseEntity<?> add(@RequestBody Task task){
         return ResponseEntity.ok(taskService.add(task));
@@ -32,6 +37,7 @@ public class TaskController {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id){
-        return ResponseEntity.ok(taskService.delete(id));
+        taskService.delete(id);
+        return ResponseEntity.ok(taskService.getById(id));
     }
 }

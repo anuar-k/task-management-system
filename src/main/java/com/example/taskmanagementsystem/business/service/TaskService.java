@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -18,11 +19,11 @@ public class TaskService {
     }
 
     public Task getById(Long id) {
-        return taskRepository.findById(id).orElseThrow(() -> new RuntimeException(String.format("Task with id: %d not found", id)));
+        return taskRepository.findById(id).orElseThrow(() -> new NoSuchElementException(String.format("Задача с id: %d не найдена", id)));
     }
 
-    public Object delete(Long id) {
-        return taskRepository.removeTaskById(id).orElseThrow(() -> new RuntimeException(String.format("Task with id: %d not found", id)));
+    public void delete(Long id) {
+        taskRepository.deleteById(id);
     }
 
     public Object update(Task task) {
